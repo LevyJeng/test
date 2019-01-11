@@ -1,0 +1,1392 @@
+﻿1.处理分区中的
+格式化分区,
+压缩卷:就是进行分区
+拓展卷:就是将分区合并
+
+2.基本命令:
+lsof -i:80
+ps aux
+ps -ef|grep mysql
+top//then M or C
+netstat -nlp
+uname
+passwd usename
+
+
+3.# 井号 (comments)
+#管理员  $普通用户
+
+在脚本中
+
+#!/bin/bash   #!/bin/sh
+井号也常出现在一行的开头，或者位于完整指令之后，这类情况表示符号后面的是注解文字，不会被执行。
+
+# This line is comments.
+echo "a = $a" # a = 0
+由于这个特性，当临时不想执行某行指令时，只需在该行开头加上 # 就行了。这常用在撰写过程中。
+#echo "a = $a" # a = 0
+如果被用在指令中，或者引号双引号括住的话，或者在倒斜线的后面，那他就变成一般符号，不具上述的特殊功能。
+
+4.~符号表示当前用户,也就是home下的thinkhey目录
+
+5.\ 倒斜线
+放在特殊符号前，则该特殊符号的作用消失；
+
+6. |  管道符号
+      用法：命令1 | 命令2
+      机制：上一个的命令输出作为下一个命令的输入
+
+7.磁盘管理
+df：列出文件系统的整体磁盘使用量
+du：检查磁盘空间使用量
+fdisk：用于磁盘分区
+
+8.vi/vim 的使用
+命令模式（Command mode），输入模式（Insert mode）和底线命令模式（Last line mode）
+
+命令模式:(刚刚进入vim)
+i 切换到输入模式，以输入字符。
+x 删除当前光标所在处的字符。
+: 切换到底线命令模式，以在最底一行输入命令。
+若想要编辑文本：启动Vim，进入了命令模式，按下i，切换到输入模式。
+
+输入模式:
+...
+
+底线命令模式:
+基本的命令有（已经省略了冒号）：
+q 退出程序
+w 保存文件
+
+9.ntfs是windows的文件系统
+fat32//
+exfat//都是windows的文件系统,后面两个比较古老
+
+ext4是linux的文件系统
+btrfs//
+xfs//后两者也是linux的文件系统,三者差不多
+
+10.Linux系统的启动过程并不是大家想象中的那么复杂，其过程可以分为5个阶段：
+
+内核的引导。
+当计算机打开电源后，首先是BIOS开机自检，按照BIOS中设置的启动设备（通常是硬盘）来启动。
+操作系统接管硬件以后，首先读入 /boot 目录下的内核文件。
+------------------------------------
+运行 init。
+init 进程是系统所有进程的起点，你可以把它比拟成系统所有进程的老祖宗，没有这个进程，系统中任何进程都不会启动。
+init 程序首先是需要读取配置文件 /etc/inittab。
+
+许多程序需要开机启动。它们在Windows叫做"服务"（service），在Linux就叫做"守护进程"（daemon）。
+init进程的一大任务，就是去运行这些开机启动的程序。
+但是，不同的场合需要启动不同的程序，比如用作服务器时，需要启动Apache，用作桌面就不需要。
+Linux允许为不同的场合，分配不同的开机启动程序，这就叫做"运行级别"（runlevel）。也就是说，启动时根据"运行级别"，确定要运行哪些程序。
+-----------------------------------------------------
+系统初始化。
+在init的配置文件中有这么一行： si::sysinit:/etc/rc.d/rc.sysinit　它调用执行了/etc/rc.d/rc.sysinit，而rc.sysinit是一个bash shell的脚本，
+它主要是完成一些系统初始化的工作，rc.sysinit是每一个运行级别都要首先运行的重要脚本。
+它主要完成的工作有：激活交换分区，检查磁盘，加载硬件模块以及其它一些需要优先执行任务。
+
+-----------------------------------------------------------
+建立终端 。
+rc执行完毕后，返回init。这时基本系统环境已经设置好了，各种守护进程也已经启动了。
+init接下来会打开6个终端，以便用户登录系统。//这就是6个终端,6个一样的终端,通过ctrl+alt+F来控制切换
+//但是在Ubuntu18.04里面前俩个不是终端,而是ctrl+alt+F1为登录前的状态,F2是登录后的状态,后四个才是终端,F7失效
+------------------------------------
+用户登录系统。
+一般来说，用户的登录方式有三种：
+（1）命令行登录
+（2）ssh登录//?还没见过
+（3）图形界面登录
+
+11.把一个分区挂载到一个目录上（Linux 不支持盘符这种方式），这样才能对这个磁盘上面的文件进行操作。
+
+12.Linux系统有7个运行级别(runlevel)：//这里的运行级别不是ctrl+alt+f那个!!!!!!!
+
+运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动
+运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆
+运行级别2：多用户状态(没有NFS)
+运行级别3：完全的多用户状态(有NFS)，登陆后进入控制台命令行模式
+运行级别4：系统未使用，保留
+运行级别5：X11控制台，登陆后进入图形GUI模式
+运行级别6：系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动
+
+13.图形模式和文字模式的切换方式:
+
+Linux预设提供了六个命令窗口终端机让我们来登录。//早期版本
+
+默认我们登录的就是第一个窗口，也就是tty1，这个六个窗口分别为tty1,tty2 … tty6，你可以按下Ctrl + Alt + F1 ~ F6 来切换它们。
+
+如果你安装了图形界面，默认情况下是进入图形界面的，此时你就可以按Ctrl + Alt + F1 ~ F6来进入其中一个命令窗口界面。
+
+当你进入命令窗口界面后再返回图形界面只要按下Ctrl + Alt + F7 就回来了。
+
+如果你用的vmware 虚拟机，命令窗口切换的快捷键为 Alt + Space + F1~F6. 如果你在图形界面下请按Alt + Shift + Ctrl + F1~F6 切换至命令窗口。
+
+14.可以运行如下命令关机：
+
+sync 将数据由内存同步到硬盘中。//这个是必要的,无论是重启还是关机
+
+shutdown 关机指令，你可以man shutdown 来看一下帮助文档。例如你可以运行如下命令关机：
+
+shutdown –h 10 ‘This server will shutdown after 10 mins’ 这个命令告诉大家，计算机将在10分钟后关机，并且会显示在登陆用户的当前屏幕中。
+
+shutdown –h now 立马关机
+
+shutdown –h 20:25 系统会在今天20:25关机
+
+shutdown –h +10 十分钟后关机
+
+shutdown –r now 系统立马重启
+
+shutdown –r +10 系统十分钟后重启
+
+reboot 就是重启，等同于 shutdown –r now
+
+halt 关闭系统，等同于shutdown –h now 和 poweroff
+
+15.linux系统目录结构:
+http://www.runoob.com/linux/linux-system-contents.html
+
+16.linux文件系统
+[root@www /]# ls -l
+total 64
+dr-xr-xr-x   2 root root 4096 Dec 14  2012 bin
+dr-xr-xr-x   4 root root 4096 Apr 19  2012 boot
+……
+实例中，bin文件的第一个属性用"d"表示。"d"在Linux中代表该文件是一个目录文件。
+
+在Linux中第一个字符代表这个文件是目录、文件或链接文件等等。
+
+当为[ d ]则是目录
+当为[ - ]则是文件；
+若是[ l ]则表示为链接文档(link file)；
+若是[ b ]则表示为装置文件里面的可供储存的接口设备(可随机存取装置)；
+若是[ c ]则表示为装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)。
+
+接下来的字符中，以三个为一组，且均为『rwx』 的三个参数的组合。其中，[ r ]代表可读(read)、[ w ]代表可写(write)、[ x ]代表可执行(execute)。 
+要注意的是，这三个权限的位置不会改变，如果没有权限，就会出现减号[ - ]而已。
+
+每个文件的属性由左边第一部分的10个字符来确定（如外图）。
+(看图)
+从左至右用0-9这些数字来表示。
+
+第0位确定文件类型，第1-3位cd 主（该文件的所有者）拥有该文件的权限。
+
+第4-6位确定属组（所有者的同组用户）拥有该文件的权限，第7-9位确定其他用户拥有该文件的权限。
+其中，第1、4、7位表示读权限，如果用"r"字符表示，则有读权限，如果用"-"字符表示，则没有读权限；
+
+第2、5、8位表示写权限，如果用"w"字符表示，则有写权限，如果用"-"字符表示没有写权限；第3、6、9位表示可执行权限，如果用"x"字符表示，则有执行权限，如果用"-"字符表示，则没有执行权限。
+
+17.Linux文件属主和属组
+[root@www /]# ls -l
+total 64
+drwxr-xr-x 2 root  root  4096 Feb 15 14:46 cron
+drwxr-xr-x 3 mysql mysql 4096 Apr 21  2014 mysql
+……
+对于文件来说，它都有一个特定的所有者，也就是对该文件具有所有权的用户。
+
+同时，在Linux系统中，用户是按组分类的，一个用户属于一个或多个组。
+
+文件所有者以外的用户又可以分为文件所有者的同组用户和其他用户。
+
+因此，Linux系统按文件所有者、文件所有者同组用户和其他用户来规定了不同的文件访问权限。
+
+在以上实例中，mysql 文件是一个目录文件，属主和属组都为 mysql，属主有可读、可写、可执行的权限；与属主同组的其他用户有可读和可执行的权限；其他用户也有可读和可执行的权限。
+
+对于 root 用户来说，一般情况下，文件的权限对其不起作用。
+
+更改文件属性
+1、chgrp：更改文件属组
+语法：
+
+chgrp [-R] 属组名 文件名
+参数选项
+
+-R：递归更改文件属组，就是在更改某个目录文件的属组时，如果加上-R的参数，那么该目录下的所有文件的属组都会更改。
+2、chown：更改文件属主，也可以同时更改文件属组
+语法：
+
+chown [–R] 属主名 文件名
+chown [-R] 属主名：属组名 文件名
+进入 /root 目录（~）将install.log的拥有者改为bin这个账号：
+
+[root@www ~] cd ~
+[root@www ~]# chown bin install.log
+[root@www ~]# ls -l
+-rw-r--r--  1 bin  users 68495 Jun 25 08:53 install.log
+将install.log的拥有者与群组改回为root：
+
+[root@www ~]# chown root:root install.log
+[root@www ~]# ls -l
+-rw-r--r--  1(序号) root(主) root(组) 68495(大小) Jun 25 08:53(日期) install.log(文件名)//----------------------------解释!!
+3、chmod：更改文件9个属性
+Linux文件属性有两种设置方法，一种是数字，一种是符号。
+
+Linux文件的基本权限就有九个，分别是owner/group/others三种身份各有自己的read/write/execute权限。
+
+先复习一下刚刚上面提到的数据：文件的权限字符为：『-rwxrwxrwx』， 这九个权限是三个三个一组的！其中，我们可以使用数字来代表各个权限，各权限的分数对照表如下：
+
+r:4
+w:2
+x:1
+每种身份(owner/group/others)各自的三个权限(r/w/x)分数是需要累加的，例如当权限为： [-rwxrwx---] 分数则是：
+
+owner = rwx = 4+2+1 = 7
+group = rwx = 4+2+1 = 7
+others= --- = 0+0+0 = 0
+所以等一下我们设定权限的变更时，该文件的权限数字就是770啦！变更权限的指令chmod的语法是这样的：
+
+ chmod [-R] xyz 文件或目录
+选项与参数：
+
+xyz : 就是刚刚提到的数字类型的权限属性，为 rwx 属性数值的相加。
+-R : 进行递归(recursive)的持续变更，亦即连同次目录下的所有文件都会变更
+举例来说，如果要将.bashrc这个文件所有的权限都设定启用，那么命令如下：
+
+[root@www ~]# ls -al .bashrc
+-rw-r--r--  1 root root 395 Jul  4 11:45 .bashrc
+[root@www ~]# chmod 777 .bashrc
+[root@www ~]# ls -al .bashrc
+-rwxrwxrwx  1 root root 395 Jul  4 11:45 .bashrc
+那如果要将权限变成 -rwxr-xr-- 呢？那么权限的分数就成为 [4+2+1][4+0+1][4+0+0]=754。
+
+符号类型改变文件权限
+还有一个改变权限的方法呦！从之前的介绍中我们可以发现，基本上就九个权限分别是(1)user (2)group (3)others三种身份啦！ 那么我们就可以藉由u, g, o来代表三种身份的权限！
+
+此外， a 则代表 all 亦即全部的身份！那么读写的权限就可以写成r, w, x！也就是可以使用底下的方式来看：
+
+chmod	u
+	g
+	o
+	a	
+		+(加入)
+		-(除去)
+		=(设定)	
+			r
+			w
+			x	文件或目录
+如果我们需要将文件权限设置为 -rwxr-xr-- ，可以使用 chmod u=rwx,g=rx,o=r 文件名 来设定:
+
+#  touch test1    // 创建 test1 文件
+# ls -al test1    // 查看 test1 默认权限
+-rw-r--r-- 1 root root 0 Nov 15 10:32 test1
+# chmod u=rwx,g=rx,o=r  test1    // 修改 test1 权限
+# ls -al test1
+-rwxr-xr-- 1 root root 0 Nov 15 10:32 test1
+而如果是要将权限去掉而不改变其他已存在的权限呢？例如要拿掉全部人的可执行权限，则：
+
+#  chmod  a-x test1
+# ls -al test1
+-rw-r--r-- 1 root root 0 Nov 15 10:32 test1
+
+18.//前面已存在
+ls: 列出目录
+cd：切换目录
+pwd：显示目前的目录
+mkdir：创建一个新的目录
+rmdir：删除一个空的目录
+cp: 复制文件或目录
+rm: 移除文件或目录
+mv: 移动文件与目录，或修改文件与目录的名称
+
+19.隐藏档( 开头为 . 的文件)
+
+20.# 表示回到自己的家目录，亦即是 /root 这个目录
+[root@www runoob]# cd ~
+
+21.pwd的相关用法
+[root@www ~]# cd /var/mail   <==注意，/var/mail是一个连结档
+[root@www mail]# pwd
+/var/mail         <==列出目前的工作目录
+[root@www mail]# pwd -P
+/var/spool/mail   <==怎么回事？有没有加 -P 差很多～
+[root@www mail]# ls -ld /var/mail
+lrwxrwxrwx 1 root root 10 Sep  4 17:54 /var/mail -> spool/mail
+# 看到这里应该知道为啥了吧？因为 /var/mail 是连结档，连结到 /var/spool/mail 
+# 所以，加上 pwd -P 的选项后，会不以连结档的数据显示，而是显示正确的完整路径啊！
+
+22.mkdir [-mp] 目录名称
+选项与参数：
+
+-m ：配置文件的权限喔！直接配置，不需要看默认权限 (umask) 的脸色～
+-p ：帮助你直接将所需要的目录(包含上一级目录)递归创建起来！
+实例：请到/tmp底下尝试创建数个新目录看看：
+
+[root@www ~]# cd /tmp
+[root@www tmp]# mkdir test    <==创建一名为 test 的新目录
+[root@www tmp]# mkdir test1/test2/test3/test4
+mkdir: cannot create directory `test1/test2/test3/test4': 
+No such file or directory       <== 没办法直接创建此目录啊！
+[root@www tmp]# mkdir -p test1/test2/test3/test4
+加了这个 -p 的选项，可以自行帮你创建多层目录！
+
+实例：创建权限为 rwx--x--x 的目录。
+
+[root@www tmp]# mkdir -m 711 test2
+[root@www tmp]# ls -l
+drwxr-xr-x  3 root  root 4096 Jul 18 12:50 test
+drwxr-xr-x  3 root  root 4096 Jul 18 12:53 test1
+drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
+上面的权限部分，如果没有加上 -m 来强制配置属性，系统会使用默认属性。
+
+如果我们使用 -m ，如上例我们给予 -m 711 来给予新的目录 drwx--x--x 的权限。
+
+23.rmdir (删除空的目录)
+语法：
+
+ rmdir [-p] 目录名称
+选项与参数：
+
+-p ：连同上一级『空的』目录也一起删除
+删除 runoob 目录
+
+[root@www tmp]# rmdir runoob/
+将 mkdir 实例中创建的目录(/tmp 底下)删除掉！
+
+[root@www tmp]# ls -l   <==看看有多少目录存在？
+drwxr-xr-x  3 root  root 4096 Jul 18 12:50 test
+drwxr-xr-x  3 root  root 4096 Jul 18 12:53 test1
+drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
+[root@www tmp]# rmdir test   <==可直接删除掉，没问题
+[root@www tmp]# rmdir test1  <==因为尚有内容，所以无法删除！
+rmdir: `test1': Directory not empty
+[root@www tmp]# rmdir -p test1/test2/test3/test4
+[root@www tmp]# ls -l        <==您看看，底下的输出中test与test1不见了！
+drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
+利用 -p 这个选项，立刻就可以将 test1/test2/test3/test4 一次删除。
+
+不过要注意的是，这个 rmdir 仅能删除空的目录，你可以使用 rm 命令来删除非空目录。
+
+24.用 root 身份，将 root 目录下的 .bashrc 复制到 /tmp 下，并命名为 bashrc
+
+[root@www ~]# cp ~/.bashrc /tmp/bashrc
+[root@www ~]# cp -i ~/.bashrc /tmp/bashrc
+cp: overwrite `/tmp/bashrc'? n  <==n不覆盖，y为覆盖
+
+25.rm (移除文件或目录)
+语法：
+
+ rm [-fir] 文件或目录
+选项与参数：
+
+-f ：就是 force 的意思，忽略不存在的文件，不会出现警告信息；
+-i ：互动模式，在删除前会询问使用者是否动作
+-r ：递归删除啊！最常用在目录的删除了！这是非常危险的选项！！！
+将刚刚在 cp 的实例中创建的 bashrc 删除掉！
+
+[root@www tmp]# rm -i bashrc
+rm: remove regular file `bashrc'? y
+如果加上 -i 的选项就会主动询问喔，避免你删除到错误的档名！
+
+mv (移动文件与目录，或修改名称)
+语法：
+
+[root@www ~]# mv [-fiu] source destination
+[root@www ~]# mv [options] source1 source2 source3 .... directory
+选项与参数：
+
+-f ：force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖；
+-i ：若目标文件 (destination) 已经存在时，就会询问是否覆盖！
+-u ：若目标文件已经存在，且 source 比较新，才会升级 (update)
+复制一文件，创建一目录，将文件移动到目录中
+
+[root@www ~]# cd /tmp
+[root@www tmp]# cp ~/.bashrc bashrc
+[root@www tmp]# mkdir mvtest
+[root@www tmp]# mv bashrc mvtest
+将某个文件移动到某个目录去，就是这样做！
+
+将刚刚的目录名称更名为 mvtest2
+
+[root@www tmp]# mv mvtest mvtest2
+
+26.Linux系统中使用以下命令来查看文件的内容：
+
+cat  由第一行开始显示文件内容
+tac  从最后一行开始显示，可以看出 tac 是 cat 的倒著写！
+nl   显示的时候，顺道输出行号！
+more 一页一页的显示文件内容
+less 与 more 类似，但是比 more 更好的是，他可以往前翻页！
+head 只看头几行
+tail 只看尾巴几行
+你可以使用 man [命令]来查看各个命令的使用文档，如 ：man cp。
+
+cat
+由第一行开始显示文件内容
+tac
+tac与cat命令刚好相反，文件内容从最后一行开始显示，可以看出 tac 是 cat 的倒着写！如：
+
+nl
+显示行号
+nl [-bnw] 文件
+
+more/less
+一页一页翻动
+[root@www ~]# more /etc/man.config
+
+head
+取出文件前面几行
+-n ：后面接数字，代表显示几行的意思
+[root@www ~]# head /etc/man.config
+默认的情况中，显示前面 10 行！若要显示前 20 行，就得要这样：
+[root@www ~]# head -n 20 /etc/man.config
+
+tail
+取出文件后面几行
+tail [-n number] 文件 
+选项与参数：
+-n ：后面接数字，代表显示几行的意思
+-f ：表示持续侦测后面所接的档名，要等到按下[ctrl]-c才会结束tail的侦测
+[root@www ~]# tail /etc/man.config
+# 默认的情况中，显示最后的十行！若要显示最后的 20 行，就得要这样：
+[root@www ~]# tail -n 20 /etc/man.config
+
+27.Linux磁盘管理常用三个命令为df、du和fdisk。
+
+df：列出文件系统的整体磁盘使用量
+du：检查磁盘空间使用量
+fdisk：用于磁盘分区
+--------------------------------------------------------------------
+df [-ahikHTm] [目录或文件名]
+选项与参数：
+
+-a ：列出所有的文件系统，包括系统特有的 /proc 等文件系统；
+-k ：以 KBytes 的容量显示各文件系统；
+-m ：以 MBytes 的容量显示各文件系统；
+-h ：以人们较易阅读的 GBytes, MBytes, KBytes 等格式自行显示；
+-H ：以 M=1000K 取代 M=1024K 的进位方式；
+-T ：显示文件系统类型, 连同该 partition 的 filesystem 名称 (例如 ext3) 也列出；
+-i ：不用硬盘容量，而以 inode 的数量来显示
+----------------------------------------------------------------------
+du [-ahskm] 文件或目录名称
+选项与参数：
+
+-a ：列出所有的文件与目录容量，因为默认仅统计目录底下的文件量而已。
+-h ：以人们较易读的容量格式 (G/M) 显示；
+-s ：列出总量而已，而不列出每个各别的目录占用容量；
+-S ：不包括子目录下的总计，与 -s 有点差别。
+-k ：以 KBytes 列出容量显示；
+-m ：以 MBytes 列出容量显示；
+----------------------------------------------------------------------
+fdisk [-l] 装置名称
+选项与参数：
+
+-l ：输出后面接的装置所有的分区内容。若仅有 fdisk -l 时， 则系统将会把整个系统内能够搜寻到的装置的分区均列出来。
+.....
+--------------------------------------------------------------------------
+磁盘相关操作:.........
+
+27.linux yum 命令
+yum（ Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE中的Shell前端软件包管理器。
+yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。
+
+28.yum常用命令
+--1.列出所有可更新的软件清单命令：yum check-update
+--2.更新所有软件命令：yum update
+--3.仅安装指定的软件命令：yum install <package_name>
+--4.仅更新指定的软件命令：yum update <package_name>
+--5.列出所有可安裝的软件清单命令：yum list
+--6.删除软件包命令：yum remove <package_name>
+--7.查找软件包 命令：yum search <keyword>
+--8.清除缓存命令:
+yum clean packages: 清除缓存目录下的软件包
+yum clean headers: 清除缓存目录下的 headers
+yum clean oldheaders: 清除缓存目录下旧的 headers
+yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
+
+利用 yum 的功能，找出以 pam 为开头的软件名称有哪些？
+[root@www ~]# yum list pam*
+
+29.ln的功能是为某一个文件在另外一个位置建立一个同不的链接，这个命令最常用的参数是-s,具体用法是：ln -s 源文件 目标文件。 !!!!!!
+当 我们需要在不同的目录，用到相同的文件时，我们不需要在每一个需要的目录下都放一个必须相同的文件，我们只要在某个固定的目录，
+放上该文件，然后在其它的 目录下用ln命令链接（link）它就可以，不必重复的占用磁盘空间。
+
+软链接：//-s
+
+1.软链接，以路径的形式存在。类似于Windows操作系统中的快捷方式
+2.软链接可以 跨文件系统 ，硬链接不可以
+3.软链接可以对一个不存在的文件名进行链接
+4.软链接可以对目录进行链接
+
+硬链接:
+
+1.硬链接，以文件副本的形式存在。但不占用实际空间。
+2.不允许给目录创建硬链接
+3.硬链接只有在同一个文件系统中才能创建
+
+ln命令会保持每一处链接文件的同步性，也就是说，不论你改动了哪一处，其它的文件都会发生相同的变化；
+
+30.【gzip】
+
+语法： gzip [-d#] filename 其中#为1-9的数字
+
+-d ：解压缩时使用
+
+-# ：压缩等级，1压缩最差，9压缩最好，6为默认
+
+gzip a.txt //压缩a.txt,压缩后,源文件会消失,变成压缩文件
+gzip -d a.txt //解压缩,压缩文件变成源文件
+gzip -9 a.txt //以第九个等级来压缩a.txt文件
+
+【bzip2】
+
+语法：bzip2 [-dz] filename
+
+-d ：解压缩
+
+-z ：压缩
+
+其实-z参数是可以省略掉的
+
+【tar】
+
+语法：tar [-zjxcvfpP] filename
+
+-z ：是否同时用gzip压缩
+
+-j ：是否同时用bzip2压缩
+
+-x ：解包或者解压缩
+
+-t ：查看tar包里面的文件
+
+-c ：建立一个tar包或者压缩文件包
+
+-v ：可视化
+
+-f ：后面跟文件名，压缩时跟-f文件名，意思是压缩后的文件名为filename，解压时跟-f文件名，意思是解压filename。请注意，如果是多个参数组合的情况下带有-f，请把f写到最后面。
+
+-p ：使用原文件的属性，压缩前什么属性压缩后还什么属性。（不常用）
+
+-P ：可以使用绝对路径。（不常用）
+
+例子:tar -cvf a.tar a.txt//用a.txt来创建一个a.tar
+
+31.Ctrl + C：这个是用来终止当前命令的快捷键，当然你也可以输入一大串字符，不想让它运行直接 Ctrl + C，光标就会跳入下一行。
+
+Tab： 这个键是最有用的键了，也是笔者敲击概率最高的一个键。因为当你打一个命令打一半时，它会帮你补全的。不光是命令，当你打一个目录时，同样可以补全，不信你试试。
+
+Ctrl + D： 退出当前终端，同样你也可以输入 exit。
+
+Ctrl + Z： 暂停当前进程，比如你正运行一个命令，突然觉得有点问题想暂停一下，就可以使用这个快捷键。暂停后，可以使用 fg 恢复它。
+
+Ctrl + L： 清屏，使光标移动到第一行。
+
+32.使用 wc统计，结果如下：//后面可以接多个文件
+$ wc testfile           # testfile文件的统计信息  
+3 92 598 testfile       # testfile文件的行数为3、单词数92、字节数598 
+
+33.命令：let
+let 命令是 BASH 中用于计算的工具，用于执行一个或多个表达式，变量计算中不需要加上 $ 来表示变量。如果表达式中包含了空格或其他特殊字符，则必须引起来。
+
+自加操作：let no++
+自减操作：let no--
+简写形式 let no+=10，let no-=20，分别等同于 let no=no+10，let no=no-20。
+
+在terminal中直接let num++
+echo $num//这里会输出1
+echo num//这里输出num这三个字母
+
+34.命令：cat
+cat 命令用于连接文件并打印到标准输出设备上(就是控制台显示处)。
+
+//注意:cat命令可以不接代码直接使用
+敲如cat命令后,终端会等待用户输入
+比如用户输入123
+则终端会输出123
+可以使用重定向
+cat >file//这里表示把接下来输入的内容输出到file中   >代表覆盖&>>代表追加
+
+[chengmo@centos5 shell]$ cat>catfile <test.sh
+#cat 的内容要重定向输出给catfile,但是这些内容不是从控制台获取输入,而是从test.sh文件中获取(输入重定向的缘故)
+
+解决单行输入的问题:
+cat << delimiter//这里的delimiter可以用任意字符串替代
+欢迎来到
+菜鸟教程
+www.runoob.com
+delimiter//这里的delimiter可以用任意字符串替代,但是要和上面那个一致
+
+35.SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。
+SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议。利用 SSH 协议可以有效防止远程管理过程中的信息泄露问题。
+
+有一个更好的办法来保证安全，而且让你可以放心地用 root 账户从远程登录——那就是通过密钥方式登录。
+
+密钥形式登录的原理是：利用密钥生成器制作一对密钥——一只公钥和一只私钥。将公钥添加到服务器的某个账户上，然后在客户端利用私钥即可完成认证并登录。
+这样一来，没有私钥，任何人都无法通过 SSH 暴力破解你的密码来远程登录到系统。此外，如果将公钥复制到其他账户甚至主机，利用私钥也可以登录。
+
+36.一般不运行root用户的，只有在特定操作需要的时候，加sudo才转变为root用户，这样比较安全。
+
+37.首先注意usr 指 Unix System Resource，而不是User然后通常：/usr/bin下面的都是系统预装的可执行程序，会随着系统升级而改变。
+/usr/local/bin目录是给用户放置自己的可执行程序的地方，推荐放在这里，不会被系统升级而覆盖同名文件。
+如果两个目录下有相同的可执行程序，谁优先执行受到PATH环境变量的影响，比如我的一台服务器的PATH变量为。echo $PATH
+
+
+
+/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/dumid/.local/bin:/home/dumid/bin
+---------------------------------------------------
+bin目录: 
+bin为binary的简写主要放置一些系统的必备执行档例如:cat、cp、chmod df、dmesg、gzip、kill、ls、mkdir、more、mount、rm、su、tar等。
+ 
+/usr/bin目录:
+主要放置一些应用软件工具的必备执行档例如c++、g++、gcc、chdrv、diff、dig、du、eject、elm、free、gnome*、 zip、htpasswd、kfm、ktop、last、less、locale、m4、make、man、mcopy、ncftp、 newaliases、nslookup passwd、quota、smb*、wget等。
+ 
+/sbin目录: 
+主要放置一些系统管理的必备程序例如:cfdisk、dhcpcd、dump、e2fsck、fdisk、halt、ifconfig、ifup、 ifdown、init、insmod、lilo、lsmod、mke2fs、modprobe、quotacheck、reboot、rmmod、 runlevel、shutdown等。
+     
+/usr/sbin目录: 
+放置一些网路管理的必备程序例如:dhcpd、httpd、imap、in.*d、inetd、lpd、named、netconfig、nmbd、samba、sendmail、squid、swap、tcpd、tcpdump等
+ 
+      综述：
+如果这是用户和管理员必备的二进制文件，就会放在/bin。如果这是系统管理员必备，但是一般用户根本不会用到的二进制文件，就会放在 /sbin。
+相对而言。如果不是用户必备的二进制文件，多半会放在/usr/bin；如果不是系统管理员必备的工具，多半会放在/usr/sbin。
+
+38.su username //表示切换用户
+
+39.top和free命令都可以用来查看内存使用情况
+
+//top显示的内容解释:,按下top后:M按memory排行,C按cpu排行,T按cpu使用时间来排行
+
+PID（Process ID）：进程标示号。 
+USER：进程所有者的用户名。 
+PR：进程的优先级别。 
+NI：进程的优先级别数值。 
+VIRT：进程占用的虚拟内存值。 
+RES：进程占用的物理内存值。 
+SHR：进程使用的共享内存值。 
+S：进程的状态，其中S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值是负数。 
+%CPU：该进程占用的CPU使用率。 
+%MEM：该进程占用的物理内存和总内存的百分比。 
+TIME＋：该进程启动后占用的总的CPU时间。 
+Command：进程启动的启动命令名称，如果这一行显示不下，进程会有一个完整的命令行。 
+
+STAT状态：  进程的状态
+   R: running  运行态
+
+   R    Running or runnable (on run queue)
+
+   S: 可中断睡眠
+
+   S    Interruptible sleep (waiting for an event to complete)
+
+   D：不可中断睡眠
+
+   D    Uninterruptible sleep (usually IO)
+
+   T：stopped 停止态
+
+   T    Stopped, either by a job control signal or because it is being traced.
+
+   Z：zombie  僵死态
+
+   Z    Defunct ("zombie") process, terminated but not reaped by its parent.
+
+   s: session leader 会话的领导者
+
+   s    is a session leader
+
+   +：前台进程
+
+   +    is in the foreground process group
+
+   l: 多线程进程
+
+   l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
+
+   N：低优先级进程
+
+   N    low-priority (nice to other users)
+
+   <: 高优先级进程
+
+  <    high-priority (not nice to other users)
+
+40.java环境变量的配置:
+切换到用户家目录，可以使用cd ~命令，找到.bashrc文件,在这个文件中进行修改,这样做是对单个用户起作用
+-----
+切换到/etc/profile,然后进行修改,这样做是对所有的用户起作用
+
+41.可以通过rz命令来获取从本机(windows)的文件
+sz命令可以用来获取发送文件到windows
+但是要注意,一定要cd到正确的地方后才可以rz!!
+
+42.tar -zxvf jdk-8u60-linux-x64.tar.gz//解压常用命令
+
+43.vim强制退出:
+底线命令模式下:q!
+
+如果仅仅只是!的话应该是无法达到效果的
+
+44./etc/init.d/:
+/etc/init.d目录在Linux系统中可是大名鼎鼎。它只负责一件事情，但却涉及到全系统。它包含系统中各种服务的start/stop脚本，从acpid到x11-common，其重要性可见一斑。
+
+
+init.d 初始化脚本称之为System V风格初始化，是System V系统传统之一，后来成为一些Unix系统的共同特性的源头。
+值得一提的是，在/etc目录下可能还包含rc#.d目录，这也是System V风格，#为数字0到6，为系统的运行级别runlevel。
+可见System V风格影响深远。
+
+init.d目录下脚本的执行方式为
+
+/etc/initi.d/command OPTION
+
+command指服务的命令，比如bluetooth，networking，samba，ssh等等。
+OPTION指stop，start，reload，restart，force-reload。
+
+比如重启SSH服务的命令为（执行这个目录下的脚本，需要root用户权限）：
+
+$ sudo /etc/init.d/ssh restart
+
+service命令 也是调用这里的服务么？
+
+例如，停止SSH服务： service ssh stop
+
+
+
+service xxx 启动 /etc/init.d/ 目录下的xxx脚本
+
+如：service vsftpd start  和 /etc/init.d/vsftpd start 有同样的作用
+
+45.快捷进入目录的方法:
+创建一个sh脚本,里面是要cd的目录
+直接执行该sh文件,发现不能进入想进入的目录,这是因为在子进程中进入了该目录,但是当前显示的是符进程,
+解决办法是:source tomcat.sh//代表由父进程亲自操作
+
+46.yum
+yum常用命令
+	1.列出所有可更新的软件清单命令：yum check-update
+	2.更新所有软件命令：yum update
+	3.仅安装指定的软件命令：yum install <package_name>
+	4.仅更新指定的软件命令：yum update <package_name>
+	5.列出所有可安裝的软件清单命令：yum list
+	6.删除软件包命令：yum remove <package_name>
+	7.查找软件包 命令：yum search <keyword>
+	8.清除缓存命令:
+yum clean packages: 清除缓存目录下的软件包
+yum clean headers: 清除缓存目录下的 headers
+yum clean oldheaders: 清除缓存目录下旧的 headers
+yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
+
+47.区别:
+wget 类似于迅雷，是一种下载工具，
+
+通过HTTP、HTTPS、FTP三个最常见的TCP/IP协议下载，并可以使用HTTP代理
+
+ 名字是World Wide Web”与“get”的结合。
+
+yum: 是redhat, centos 系统下的软件安装方式，基于Linux，
+
+         全称为 Yellow dog Updater, Modified，
+
+         是一个在Fedora和RedHat以及CentOS中的Shell前端软件包管理器
+
+         基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包。
+
+rpm:  软件管理;   redhat的软件格式 rpm     r=redhat  p=package   m=management
+
+             用于安装 卸载 .rpm软件
+
+串联下：
+
+   使用wget下载一个 rpm包, 然后用 rpm -ivh  xxx.rpm  安装这个软件，嫌麻烦的话，就
+
+   可以直接用  yum  install  sqoop   来自动下载和安装依赖的rpm软件。
+
+ap-get是ubuntu下的一个软件安装方式，它是基于debain。
+
+48.源码放哪里？
+/usr/src：系统级的源码目录。
+/usr/local/src：用户级的源码目录。
+
+49.find / -name mysql.sock//查找文件的格式
+
+50.kill
+在查到端口占用的进程后，如果你要杀掉对应的进程可以使用 kill 命令：
+
+kill -9 PID//这里的PID 用数字来替代
+
+lsof
+lsof(list open files)是一个列出当前系统打开文件的工具。
+
+lsof 查看端口占用语法格式：
+
+lsof -i:端口号//需要root用户来执行
+
+netstat命令各个参数说明如下：
+　　
+-t : 指明显示TCP端口
+　　
+-u : 指明显示UDP端口
+　　
+-l : 仅显示监听套接字(所谓套接字就是使应用程序能够读写与收发通讯协议(protocol)与资料的程序)
+　　
+-p : 显示进程标识符和程序名称，每一个套接字/端口都属于一个程序。
+　　
+-n : 不进行DNS轮询，显示IP(可以加速操作)
+即可显示当前服务器上所有端口及进程服务，于grep结合可查看某个具体端口及服务情况
+.
+netstat -ntlp   //查看当前所有tcp端口
+·
+netstat -ntulp |grep 80   //查看所有80端口使用情况·
+//grep是检索的意思
+netstat -ntulp | grep 3306   //查看所有3306端口使用情况·
+
+51.参照tomcat添加到service里面快捷启动:
+tar zxvf apache-tomcat-7.0.14.tar.gz
+mv apache-tomcat-7.0.14 /usr/local/tomcat
+cp -p /usr/local/tomcat/bin/catalina.sh /etc/init.d/tomcat
+vim /etc/init.d/tomcat
+在第二行加入以下内容：
+
+# chkconfig: 2345 63 37
+# description: tomcat server init script
+
+JAVA_HOME=/usr/local/jdk1.6.0_23/
+CATALINA_HOME=/usr/local/tomcat
+
+chmod 755 /etc/init.d/tomcat
+chkconfig --add tomcat
+chkconfig tomcat on
+
+52.查看开机启动项
+chkconfig --list
+
+chkconfig telnet on //开启Telnet服务
+
+chkconfig telnet off  //关闭Telnet服务
+
+53.linux连接linux服务器:
+ssh root@(ip地址)
+然后输入密码
+
+退出的话:exit
+
+54.scp是有Security的文件copy，基于ssh登录。 
+
+命令基本格式： 
+scp [OPTIONS] file_source file_target 
+
+55.wget 是一个经由 GPL 许可的可从网络上自动获取文件的自由软件包。它是一个非交互式的命令行工具。支持 HTTP，HTTPS 和 FTP 协议，支持代理服务器以及断点续传功能。简单强大
+只能从远程机器将文件或文件夹下载到本地
+
+scp就是secure copy，是用来进行远程文件拷贝的。数据传输使用 ssh，并且和ssh 使用相同的认证方式，提供相同的安全保证 。 
+--------------------
+-p 保留原文件的修改时间，访问时间和访问权限。  （建议使用，传输时保留属性时间信息，否则会导致时间发生改变无法进行增量传输）
+-r  递归复制整个目录。 
+
+scp的使用：//scp sth1 to sth2           //从sth1复制到sth2
+将本地A主机文件复制到B主机： A:192.168.214.190    B：192.168.214.187
+[root@localhost tmp]#scp -p ./files/yum.log 192.168.214.187:/tmp/demo/
+
+将远程主机复制到本地
+[root@localhost files]#scp -p 192.168.214.187:/tmp/demo/f3.log /tmp/files/
+----------------------
+
+rcp,目标主机需要事先打开rcp功能，并设置好rcp的权限：把源主机加入到可信任主机列表中，否则无法在源主机上使用rcp远程复制文件到目标主机。  
+
+rsync,功能强大，操作类似scp，支持排除目录，支持限速参数；还支持本地复制。 
+
+sftp,sftp 是一个交互式文件传输程式。
+
+注意scp sftp也是基于ssh安全协议的
+
+56. - 和 --的区别
+第一种：参数用一横的说明后面的参数是字符形式。
+
+第二种：参数用两横的说明后面的参数是单词形式。//解决参数不够用的问题??26个字母不够用??
+
+第三种：参数前有横的是 System V风格。
+
+第四种：参数前没有横的是 BSD风格。
+
+57.Linux ps命令用于显示当前进程 (process) 的状态。
+
+ps [options] [--help]
+
+ps 的参数非常多, 在此仅列出几个常用的参数并大略介绍含义
+-A 列出所有的行程
+-w 显示加宽可以显示较多的资讯
+-au 显示较详细的资讯
+-aux 显示所有包含其他使用者的行程//挺好用的
+
+$ ps
+
+PID	TTY	TIME	CMD
+
+3884	pts/1    00:00:00 	bash
+
+3955	pts/2    00:00:00 	more
+
+3956	pts/5    00:00:05 	sqlplus
+
+•        PID 是进程的标识号。 
+
+•        TTY 是进程所属的终端控制台。 
+•        TIME 列是进程所使用的总的 CPU 时间。 
+
+•        CMD 列列出正在执行的命令行。 
+
+使用带有 -ef 选项的 ps，返回系统中所有用户的所有进程的完整列表。
+(UID是用户ID，PID是进程ID，PPID是父进程ID)
+
+可以看到ps -ef这个命令的进程PID为5004，而其父进程号PPID为4945，该4945进程号对应的进程命令为-bash，
+即表明ps -ef命令是运行在-bash这个shell上，而PID为4945对应的父进程号PPID为4893，该进程是4893，
+这个进程的命令是sshd，即我们表明我们是通过shell登录进来的，再看PID为1881对应的父进程PPID为1，是命令/sbin/init，这是Linux启动之后第一个被加载的进程。
+
+一般将此 ps 命令的结果传送到 grep 中，则该结果更易于查看。
+例如： 
+$  ps -ef | grep Oracle
+
+
+58.ps看到的是命令执行瞬间的进程信息,
+而top可以持续的监视
+
+ps只是查看进程,
+而top还可以监视系统性能,如平均负载,cpu和内存的消耗
+
+另外top还可以操作进程,如改变优先级(命令r)和关闭进程(命令k)
+
+
+
+
+
+
+
+
+ps主要是查看进程的，关注点在于查看需要查看的进程
+
+
+top主要看cpu,内存使用情况，及占用资源最多的进程由高到低排序，关注点在于资源占用情况
+
+
+
+59.查看服务器信息:
+# uname －a   （Linux查看版本当前操作系统内核信息）
+# cat /proc/version （Linux查看当前操作系统版本信息）
+#cat /etc/issue  或cat /etc/redhat-release（Linux查看版本当前操作系统发行版信息）
+# cat /proc/cpuinfo （Linux查看cpu相关信息，包括型号、主频、内核信息等）
+
+59./var/log下有日志信息
+
+60.apt update
+从软件源服务器获取最新的软件信息并缓存到本地。
+因为很多apt的其他命令都是要通过比对版本信息来进行操作的，
+如果每次都去对比线上的版本信息效率肯定不理想，也没必要，所以做了一个缓存的机制。
+
+
+
+
+apt upgrade
+从本地仓库中对比系统中所有已安装的软件，如果有新版本的话则进行升级
+
+
+
+
+apt list
+列出本地仓库中所有的软件包名
+
+
+
+
+apt list [package]
+从本地仓库中查找指定的包名，支持通配符，比如"apt list zlib*"就能列出以zlib开头的所有包名
+
+
+
+
+可以看到，如果包名后面带有"[installed]"表示该软件已经安装
+
+
+
+
+apt list --installed
+列出系统中所有已安装的包名
+
+
+apt search [key]
+与list类似，通过给出的关键字进行搜索，列出所有的包和其描述
+
+
+
+
+apt show [package]
+列出指定包的详细情况，包名要填写完整。
+
+
+
+可以看到非常完整的信息，比如版本、大小、依赖的其他包等。
+
+
+
+
+apt install [package]
+安装指定的包，并同时安装其依赖的其他包。
+
+
+
+
+apt remove [package]
+卸载包，但不删除相关配置文件。包名支持通配符
+
+
+
+
+apt autoremove
+卸载因安装软件自动安装的依赖，而现在又不需要的依赖包 
+
+
+
+
+apt purge [package]
+卸载包，同时删除相关配置文件。包名支持通配符
+
+
+
+
+apt clean
+删除所有已下载的软件包
+
+
+apt autoclean
+类似clean，但删除的是过期的包（即已不能下载或者是无用的包）
+
+apt = apt-get、apt-cache 和 apt-config 中最常用命令选项的集合。//apt就是他们的集合,更加统一
+
+61.安装
+
+yum install 全部安装
+
+yum install package1 安装指定的安装包package1
+
+yum groupinsall group1 安装程序组group1
+
+2 
+
+更新和升级
+
+yum update 全部更新
+
+yum update package1 更新指定程序包package1
+
+yum check-update 检查可更新的程序
+
+yum upgrade package1 升级指定程序包package
+
+yum groupupdate group1 升级程序组group1
+
+3 
+
+查找和显示
+
+yum info package1 显示安装包信息package1
+
+yum list 显示所有已经安装和可以安装的程序包
+
+yum list package1 显示指定程序包安装情况package1
+
+yum groupinfo group1 显示程序组group1信息
+yum search string 根据关键字string查找安装包
+
+删除程序
+
+yum remove & erase package1 删除程序包package1
+
+yum groupremove group1 删除程序组group1
+
+yum deplist package1 查看程序package1依赖情况
+
+5 
+
+清除缓存
+
+yum clean packages 清除缓存目录下的软件包
+
+yum clean headers 清除缓存目录下的 headers
+
+yum clean oldheaders 清除缓存目录下旧的 headers
+
+yum clean, yum clean all (= yum clean packages; yum clean oldheaders) 清除缓存目录下的软件包及旧的header
+
+62.应该说，/bin/sh与/bin/bash虽然大体上没什么区别，但仍存在不同的标准。标记为#!/bin/sh的脚本不应使用任何POSIX没有规定的特性 (如let等命令, 但#!/bin/bash可以)。
+
+63.在“etc/bin”中的“etc”真正代表的是“etcetera”(附加物)。
+
+64.curl命令 是一个利用URL规则在命令行下工作的文件传输工具。
+可以用来测试网络是否连通
+
+65. ./configure 是用来检测你的安装平台的目标特征的。比如它会检测你是不是有CC或GCC，并不是需要CC或GCC，它是个shell脚本。
+
+make 是用来编译的，它从Makefile中读取指令，然后编译。
+
+make install是用来安装的，它也从Makefile中读取指令，安装到指定的位置。
+
+66.linux centos版本的防火墙是firewalld而不是iptables
+firewall-cmd --zone=public --add-port=80/tcp --permanent  //打开80端口
+
+67.scp 140.143.54.121:/home/dumid/tomcat.sh /home/levy(/)
+这样做是复制源文件(不改名)到levy目录下,加不加/无所谓                //注意,如果levy目录不存在的话,复制过来的就直接是一个levy文件,而不是放在文件夹下
+
+scp 140.143.54.121:/home/dumid/te.txt /home/levy/test.txt
+这样做是复制后并改名
+
+68../link文件相当于直接打开该可执行文件,比如abc指向tomcat.sh,直接./abc就相当于执行了tomcat.sh
+
+69.cat /etc/passwd
+可以用来查看所有的用户
+
+70.但其实Iptables服务与Firewalld服务都不是真正的防火墙，它们都只是用来定义防火墙规则功能的“防火墙管理工具”，
+将定义好的规则交由内核中的netfilter即网络过滤器来读取，从而真正实现防火墙功能
+
+71.防火墙虽有软件或硬件之分但主要功能还是依据策略对外部请求进行过滤，成为公网与内网之间的保护屏障，
+防火墙会监控每一个数据包并判断是否有相应的匹配策略规则，直到满足其中一条策略规则为止，
+而防火墙规则策略可以是基于来源地址、请求动作或协议来定制的，最终仅让合法的用户请求流入到内网中，其余的均被丢弃。
+
+72.在iptables命令中设置数据过滤或处理数据包的策略叫做规则，将多个规则合成一个链。
+举例来说:小区门卫有两条的规则，将这两个规则可以合成一个规则链：
+
+遇到外来车辆需要登记。
+严禁快递小哥进入社区。
+
+73.iptables命令中则常见的控制类型有：
+
+ACCEPT:允许通过.
+LOG:记录日志信息,然后传给下一条规则继续匹配.//注意下一条规则会继续匹配
+REJECT:拒绝通过,必要时会给出提示.//ping的时候出现 From 192.168.10.10 icmp_seq=1 Destination Port Unreachable
+DROP:直接丢弃,不给出任何回应.//ping的时候会出现4 packets transmitted, 0 received, 100% packet loss, time 3000ms
+
+74.规则链则依据处理数据包的位置不同而进行分类：
+
+PREROUTING:在进行路由选择前处理数据包
+INPUT:处理入站的数据包
+OUTPUT:处理出站的数据包
+FORWARD:处理转发的数据包
+POSTROUTING:在进行路由选择后处理数据包
+
+Iptables中的规则表是用于容纳规则链，规则表默认是允许状态的，那么规则链就是设置被禁止的规则，而反之如果规则表是禁止状态的，那么规则链就是设置被允许的规则。
+raw表:确定是否对该数据包进行状态跟踪
+mangle表:为数据包设置标记
+nat表:修改数据包中的源、目标IP地址或端口
+filter表:确定是否放行该数据包（过滤）
+默认的表和链的示意图
+
+规则表的先后顺序:raw→mangle→nat→filter
+
+规则表的先后顺序:raw→mangle→nat→filter
+
+规则链的先后顺序:
+
+入站顺序:PREROUTING→INPUT
+
+出站顺序:OUTPUT→POSTROUTING
+
+转发顺序:PREROUTING→FORWARD→POSTROUTING
+
+75.还有三点注意事项：
+
+	1.没有指定规则表则默认指filter表。
+
+	2.不指定规则链则指表内所有的规则链。
+
+	3.在规则链中匹配规则时会依次检查，匹配即停止（LOG规则例外），若没匹配项则按链的默认状态处理。
+
+76.iptables命令用于管理防火墙的规则策略，格式为：“iptables [-t 表名] 选项 [链名] [条件] [-j 控制类型]”。
+
+iptables命令用于管理防火墙的规则策略，格式为：“iptables [-t 表名] 选项 [链名] [条件] [-j 控制类型]”。
+
+参数		作用
+-P		设置默认策略:iptables -P INPUT (DROP|ACCEPT)
+-F		清空规则链
+-L		查看规则链
+-A		在规则链的末尾加入新规则
+-I num		在规则链的头部加入新规则
+-D num		删除某一条规则
+-s		匹配来源地址IP/MASK，加叹号"!"表示除这个IP外。
+-d		匹配目标地址
+-i 网卡名称	匹配从这块网卡流入的数据
+-o 网卡名称	匹配从这块网卡流出的数据
+-p		匹配协议,如tcp,udp,icmp
+--dport num	匹配目标端口号
+--sport num	匹配来源端口号
+ 
+查看已有的规则：
+[root@linuxprobe ~]# iptables -L
+
+清空已有的规则：
+[root@linuxprobe ~]# iptables -F
+
+将INPUT链的默认策略设置为拒绝：
+当INPUT链默认规则设置为拒绝时，我们需要写入允许的规则策略。
+
+这个动作的目地是当接收到数据包时，按顺序匹配所有的允许规则策略，当全部规则都不匹配时，拒绝这个数据包。
+[root@linuxprobe ~]# iptables -P INPUT DROP
+
+允许所有的ping操作：
+[root@linuxprobe ~]# iptables -I INPUT -p icmp -j ACCEPT
+
+在INPUT链的末尾加入一条规则，允许所有未被其他规则匹配上的数据包：
+因为默认规则表就是filter，所以其中的"-t filter"一般省略不写，效果是一样的。
+[root@linuxprobe ~]# iptables -t filter -A INPUT -j ACCEPT
+
+删除上面的那条规则：
+[root@linuxprobe ~]# iptables -D INPUT 2
+
+模拟训练A:仅允许来自于192.168.10.0/24域的用户连接本机的ssh服务。
+
+Iptables防火墙会按照顺序匹配规则，请一定要保证“允许”规则是在“拒绝”规则的上面。
+[root@linuxprobe ~]# iptables -I INPUT -s 192.168.10.0/24 -p tcp --dport 22 -j ACCEPT
+[root@linuxprobe ~]# iptables -A INPUT -p tcp --dport 22 -j REJECT
+
+模拟训练B:不允许任何用户访问本机的12345端口。
+[root@linuxprobe ~]# iptables -I INPUT -p tcp --dport 12345 -j REJECT
+[root@linuxprobe ~]# iptables -I INPUT -p udp --dport 12345 -j REJECT
+
+模拟实验C(答案模式):拒绝其他用户从"eno16777736"网卡访问本机http服务的数据包。
+答案：[rootlinuxprobe ~]# iptables -I INPUT -i eno16777736 -p tcp --dport 80 -j REJECT
+
+模拟训练D:禁止用户访问www.my133t.org。
+[root@linuxprobe ~]# iptables -I FORWARD -d www.my133t.org -j DROP
+
+模拟训练E:禁止IP地址是192.168.10.10的用户上网
+[root@linuxprobe ~]# iptables -I FORWARD -s 192.168.10.10 -j DROP
+
+iptables命令执行后的规则策略仅当前生效，若想重启后依然保存规则需执行"service iptables save"。
+
+77.SNAT即源地址转换技术，能够让多个内网用户通过一个外网地址上网，解决了IP资源匮乏的问题，确实很实用。
+
+78.Firewalld服务是红帽RHEL7系统中默认的防火墙管理工具，特点是拥有运行时配置与永久配置选项且能够支持动态更新以及"zone"的区域功能概念
+
+字符管理工具firewall-cmd命令,命令参数有：
+
+参数		作用
+--get-default-zone	查询默认的区域名称。
+--set-default-zone=<区域名称>	设置默认的区域，永久生效。
+--get-zones	显示可用的区域。
+--get-services	显示预先定义的服务。
+--get-active-zones	显示当前正在使用的区域与网卡名称。
+--add-source=	将来源于此IP或子网的流量导向指定的区域。
+--remove-source=	不再将此IP或子网的流量导向某个指定区域。
+--add-interface=<网卡名称>	将来自于该网卡的所有流量都导向某个指定区域。
+--change-interface=<网卡名称>	将某个网卡与区域做关联。
+--list-all	显示当前区域的网卡配置参数，资源，端口以及服务等信息。
+--list-all-zones	显示所有区域的网卡配置参数，资源，端口以及服务等信息。
+--add-service=<服务名>	设置默认区域允许该服务的流量。
+--add-port=<端口号/协议>	允许默认区域允许该端口的流量。
+--remove-service=<服务名>	设置默认区域不再允许该服务的流量。
+--remove-port=<端口号/协议>	允许默认区域不再允许该端口的流量。
+--reload	让“永久生效”的配置规则立即生效，覆盖当前的。
+
+79.firewalld服务有两份规则策略配置记录，必需要能够区分：
+
+RunTime:当前正在生效的。
+
+Permanent:永久生效的。
+
+80.查看当前的区域：
+[root@linuxprobe ~]# firewall-cmd --get-default-zone
+public
+
+查询eno16777728网卡的区域：
+[root@linuxprobe ~]# firewall-cmd --get-zone-of-interface=eno16777728
+public
+
+在public中分别查询ssh与http服务是否被允许：
+[root@linuxprobe ~]# firewall-cmd --zone=public --query-service=ssh
+yes
+[root@linuxprobe ~]# firewall-cmd --zone=public --query-service=http
+no
+
+设置默认规则为dmz：
+[root@linuxprobe ~]# firewall-cmd --set-default-zone=dmz
+
+让“永久生效”的配置文件立即生效：
+[root@linuxprobe ~]# firewall-cmd --reload
+success
+
+启动/关闭应急状况模式，阻断所有网络连接：
+应急状况模式启动后会禁止所有的网络连接，一切服务的请求也都会被拒绝，当心，请慎用。
+[root@linuxprobe ~]# firewall-cmd --panic-on
+success
+[root@linuxprobe ~]# firewall-cmd --panic-off
+success
+
+模拟训练A:允许https服务流量通过public区域，要求立即生效且永久有效：
+方法一:分别设置当前生效与永久有效的规则记录：
+[root@linuxprobe ~]# firewall-cmd --zone=public --add-service=https
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --add-service=https
+
+方法二:设置永久生效的规则记录后读取记录：
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --add-service=https
+[root@linuxprobe ~]# firewall-cmd --reload
+
+模拟训练B:不再允许http服务流量通过public区域，要求立即生效且永久生效：
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --remove-service=http
+ success
+使用参数"--reload"让永久生效的配置文件立即生效：
+[root@linuxprobe ~]# firewall-cmd --reload
+success
+
+模拟训练C:允许8080与8081端口流量通过public区域，立即生效且永久生效：
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --add-port=8080-8081/tcp
+[root@linuxprobe ~]# firewall-cmd --reload
+
+模拟训练D:查看模拟实验C中要求加入的端口操作是否成功：
+[root@linuxprobe ~]# firewall-cmd --zone=public --list-ports
+8080-8081/tcp
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --list-ports
+8080-8081/tcp
+
+模拟实验E:将eno16777728网卡的区域修改为external，重启后生效：
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=external --change-interface=eno16777728
+success
+[root@linuxprobe ~]# firewall-cmd --get-zone-of-interface=eno16777728
+public
+
+端口转发功能可以将原本到某端口的数据包转发到其他端口:
+firewall-cmd --permanent --zone=<区域> --add-forward-port=port=<源端口号>:proto=<协议>:toport=<目标端口号>:toaddr=<目标IP地址>
+将访问192.168.10.10主机888端口的请求转发至22端口：
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --add-forward-port=port=888:proto=tcp:toport=22:toaddr=192.168.10.10
+success
+
+使用客户机的ssh命令访问192.168.10.10主机的888端口：
+[root@linuxprobe ~]# ssh -p 888 192.168.10.10
+The authenticity of host '[192.168.10.10]:888 ([192.168.10.10]:888)' can't be established.
+ECDSA key fingerprint is b8:25:88:89:5c:05:b6:dd:ef:76:63:ff:1a:54:02:1a.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[192.168.10.10]:888' (ECDSA) to the list of known hosts.
+root@192.168.10.10's password:
+Last login: Sun Jul 19 21:43:48 2015 from 192.168.10.10
+
+另外流量均衡技术也是常用的技术，比如将一台主机作为网站的前端服务器，将访问流量分流至内网中3台不同的主机上。
+iptables -A PREROUTING -i eth0 -p tcp --dport 80 -m state --state NEW -m nth --counter 0 --every 3 --packet 0 -j DNAT --to-destination 192.168.10.10:80
+iptables -A PREROUTING -i eth0 -p tcp --dport 80 -m state --state NEW -m nth --counter 0 --every 3 --packet 0 -j DNAT --to-destination 192.168.10.11:80
+iptables -A PREROUTING -i eth0 -p tcp --dport 80 -m state --state NEW -m nth --counter 0 --every 3 --packet 0 -j DNAT --to-destination 192.168.10.12:80
+再次提示:仔细琢磨下立即生效与重启后依然生效的差别，千万不要修改错了。
+
+模拟实验F:设置富规则，拒绝192.168.10.0/24网段的用户访问ssh服务：
+firewalld服务的富规则用于对服务、端口、协议进行更详细的配置，规则的优先级最高。
+[root@linuxprobe ~]# firewall-cmd --permanent --zone=public --add-rich-rule="rule family="ipv4" source address="192.168.10.0/24" service name="ssh" reject"
+success
+
+81.192.168.0.0/16 范围是 192.168.0.0~192.168.255.255//16代表掩码位
+
+82.Systemctl是一个systemd工具，主要负责控制systemd系统和服务管理器。systemd是作为父进程（PID=1）运行的。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
